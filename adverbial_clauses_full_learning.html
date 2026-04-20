@@ -1,0 +1,470 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.wrap{padding:1rem 0;font-family:var(--font-sans);max-width:800px}
+.nav{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.5rem}
+.ntab{padding:7px 14px;border-radius:20px;border:0.5px solid var(--color-border-secondary);font-size:13px;cursor:pointer;background:var(--color-background-primary);color:var(--color-text-secondary);transition:all .15s;white-space:nowrap}
+.ntab.on{background:#EEEDFE;color:#3C3489;border-color:#AFA9EC;font-weight:500}
+.sec{display:none}.sec.on{display:block}
+
+.unit{margin-bottom:2rem}
+.unit-title{font-size:16px;font-weight:500;color:var(--color-text-primary);margin-bottom:.75rem;padding-bottom:8px;border-bottom:2px solid #EEEDFE}
+
+.concept-card{border-radius:var(--border-radius-lg);border:0.5px solid var(--color-border-tertiary);overflow:hidden;margin-bottom:1rem}
+.cc-head{padding:12px 16px;display:flex;align-items:center;gap:10px}
+.cc-body{padding:12px 16px;border-top:0.5px solid var(--color-border-tertiary);background:var(--color-background-secondary)}
+.cc-badge{padding:3px 12px;border-radius:20px;font-size:12px;font-weight:500;white-space:nowrap}
+.cc-rule{font-size:14px;font-weight:500;color:var(--color-text-primary);line-height:1.6}
+.cc-sub{font-size:13px;color:var(--color-text-secondary);margin-top:4px;line-height:1.6}
+
+.ex-row{display:flex;gap:8px;margin-bottom:8px;align-items:flex-start}
+.ex-label{font-size:11px;font-weight:500;padding:2px 8px;border-radius:20px;white-space:nowrap;margin-top:2px}
+.ex-ok{background:#EAF3DE;color:#27500A}
+.ex-bad{background:#FCEBEB;color:#791F1F}
+.ex-text{font-size:13px;color:var(--color-text-primary);line-height:1.7}
+.hl{font-weight:500;color:#534AB7;text-decoration:underline;text-decoration-style:dotted}
+.hl-red{font-weight:500;color:#A32D2D;text-decoration:line-through}
+
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1rem}
+.cg-card{border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-tertiary);padding:12px}
+.cg-top{font-size:12px;font-weight:500;margin-bottom:8px;padding-bottom:6px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.cg-item{font-size:13px;color:var(--color-text-primary);margin-bottom:6px;line-height:1.6}
+
+.rule-box{border-left:3px solid #7F77DD;padding:10px 14px;background:var(--color-background-secondary);border-radius:0 var(--border-radius-md) var(--border-radius-md) 0;margin-bottom:10px;font-size:13px;line-height:1.7;color:var(--color-text-primary)}
+.rule-label{font-size:11px;font-weight:500;color:#534AB7;margin-bottom:4px}
+
+.q-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1.25rem;margin-bottom:1rem}
+.q-meta{font-size:11px;color:var(--color-text-tertiary);margin-bottom:6px}
+.q-text{font-size:15px;font-weight:500;color:var(--color-text-primary);margin-bottom:.75rem;line-height:1.6}
+.hint-btn{font-size:12px;padding:4px 10px;border-radius:20px;border:0.5px solid var(--color-border-secondary);cursor:pointer;background:transparent;color:var(--color-text-secondary);margin-bottom:8px}
+.hbox{background:#FAEEDA;border:0.5px solid #FAC775;border-radius:var(--border-radius-md);padding:9px 13px;font-size:13px;color:#633806;margin-bottom:8px;display:none;line-height:1.6}
+.hbox.on{display:block}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.opt{padding:9px 12px;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-tertiary);cursor:pointer;font-size:13px;color:var(--color-text-primary);background:var(--color-background-primary);text-align:left}
+.opt:hover:not(:disabled){background:var(--color-background-secondary)}
+.opt.ok{background:#EAF3DE!important;border-color:#97C459!important;color:#27500A!important}
+.opt.no{background:#FCEBEB!important;border-color:#F09595!important;color:#791F1F!important}
+.opt:disabled{cursor:default}
+.exp{margin-top:8px;padding:9px 13px;border-radius:var(--border-radius-md);font-size:13px;line-height:1.6;display:none}
+.exp.on{display:block}
+.exp.ok{background:#EAF3DE;color:#27500A}
+.exp.no{background:#FCEBEB;color:#791F1F}
+
+.score-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;padding:10px 14px;background:var(--color-background-secondary);border-radius:var(--border-radius-md)}
+.score-val{font-size:20px;font-weight:500;color:var(--color-text-primary)}
+.score-lbl{font-size:12px;color:var(--color-text-secondary)}
+.reset-btn{padding:6px 16px;border-radius:20px;border:0.5px solid var(--color-border-secondary);cursor:pointer;background:transparent;color:var(--color-text-primary);font-size:13px}
+
+.progress-mini{display:flex;gap:4px;flex-wrap:wrap;margin-top:4px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--color-border-secondary)}
+.dot.ok{background:#639922}
+.dot.no{background:#E24B4A}
+</style>
+
+<div class="wrap">
+<h2 class="sr-only">Học và luyện tập mệnh đề trạng ngữ tiếng Anh</h2>
+
+<div class="nav">
+  <button class="ntab on" onclick="go('cause')">Nguyên nhân</button>
+  <button class="ntab" onclick="go('concede')">Nhượng bộ</button>
+  <button class="ntab" onclick="go('contrast')">Tương phản</button>
+  <button class="ntab" onclick="go('result')">Kết quả</button>
+  <button class="ntab" onclick="go('time')">Thời gian</button>
+  <button class="ntab" onclick="go('condition')">Điều kiện</button>
+  <button class="ntab" onclick="go('mixed')">Luyện tổng hợp</button>
+</div>
+
+<!-- ======================== NGUYÊN NHÂN ======================== -->
+<div id="cause" class="sec on">
+  <div class="unit">
+    <div class="unit-title">Chỉ nguyên nhân — Cause</div>
+
+    <div class="concept-card">
+      <div class="cc-head" style="background:#E6F1FB">
+        <span class="cc-badge" style="background:#B5D4F4;color:#0C447C">Mệnh đề (S + V)</span>
+        <div>
+          <div class="cc-rule">because / since / as + <em>chủ ngữ + động từ</em></div>
+          <div class="cc-sub">Vế sau giải thích LÝ DO cho vế trước</div>
+        </div>
+      </div>
+      <div class="cc-body">
+        <div class="ex-row"><span class="ex-label ex-ok">Đúng</span><span class="ex-text">She stayed home <span class="hl">because</span> she was sick.</span></div>
+        <div class="ex-row"><span class="ex-label ex-ok">Đúng</span><span class="ex-text"><span class="hl">Since</span> it was raining, we stayed inside.</span></div>
+        <div class="ex-row"><span class="ex-label ex-bad">Sai</span><span class="ex-text">She stayed home <span class="hl-red">because of</span> she was sick.</span></div>
+        <div style="font-size:12px;color:var(--color-text-tertiary);margin-top:6px">because of không đi với mệnh đề có S+V</div>
+      </div>
+    </div>
+
+    <div class="concept-card">
+      <div class="cc-head" style="background:#EAF3DE">
+        <span class="cc-badge" style="background:#C0DD97;color:#27500A">Cụm từ (N / V-ing)</span>
+        <div>
+          <div class="cc-rule">because of / due to / owing to + <em>danh từ hoặc V-ing</em></div>
+          <div class="cc-sub">Sau đây KHÔNG có động từ chia thì</div>
+        </div>
+      </div>
+      <div class="cc-body">
+        <div class="ex-row"><span class="ex-label ex-ok">Đúng</span><span class="ex-text">Our flight was delayed <span class="hl">because of</span> the heavy fog.</span></div>
+        <div class="ex-row"><span class="ex-label ex-ok">Đúng</span><span class="ex-text">He failed <span class="hl">due to</span> not studying hard enough.</span></div>
+        <div class="ex-row"><span class="ex-label ex-bad">Sai</span><span class="ex-text">She stayed home <span class="hl-red">because of</span> she was sick.</span></div>
+      </div>
+    </div>
+
+    <div class="rule-box">
+      <div class="rule-label">Mẹo nhớ nhanh</div>
+      Nhìn vào sau chỗ trống:<br>
+      → Thấy <strong>chủ ngữ + động từ</strong> → dùng <strong>because / since / as</strong><br>
+      → Thấy <strong>danh từ / cụm danh từ</strong> → dùng <strong>because of / due to</strong>
+    </div>
+  </div>
+
+  <div class="score-row"><div><div class="score-val" id="sc-cause">0 / 0</div><div class="score-lbl">điểm</div></div><button class="reset-btn" onclick="resetQ('cause')">Làm lại</button></div>
+  <div id="qs-cause"></div>
+</div>
+
+<!-- ======================== NHƯỢNG BỘ ======================== -->
+<div id="concede" class="sec">
+  <div class="unit">
+    <div class="unit-title">Chỉ nhượng bộ — Concession (Mặc dù…)</div>
+
+    <div class="concept-card">
+      <div class="cc-head" style="background:#EEEDFE">
+        <span class="cc-badge" style="background:#CECBF6;color:#3C3489">Mệnh đề (S + V)</span>
+        <div>
+          <div class="cc-rule">although / even though / though + <em>chủ ngữ + động từ</em></div>
+          <div class="cc-sub">Hai vế TRÁI NHAU nhưng cả hai đều xảy ra</div>
+        </div>
+      </div>
+      <div class="cc-body">
+        <div class="ex-row"><span class="ex-label ex-ok">Đúng</span><span class="ex-text"><span class="hl">Although</span> it rained, we went out.</span></div>
+        <div class="ex-row"><span class="ex-label ex-ok">Đúng</span><span class="ex-text">We went out <span class="hl">even though</span> it was raining.</span></div>
+        <div class="ex-row"><span class="ex-label ex-bad">Sai</span><span class="ex-text"><span class="hl-red">Although</span> the rain, we went out.</span></div>
+        <div class="ex-row"><span class="ex-label ex-bad">Sai</span><span class="ex-text">Although it rained, <span class="hl-red">but</span> we went out.</span></div>
+        <div style="font-size:12px;color:var(--color-text-tertiary);margin-top:6px">Không bao giờ dùng "but" sau although trong cùng câu</div>
+      </div>
+    </div>
+
+    <div class="concept-card">
+      <div class="cc-head" style="background:#FBEAF0">
+        <span class="cc-badge" style="background:#F4C0D1;color:#72243E">Cụm từ (N / V-ing)</span>
+        <div>
+          <div class="cc-rule">despite / in spite of + <em>danh từ / V-ing / the fact that…</em></div>
+          <div class="cc-sub">Không có động từ chia thì ngay sau</div>
+        </div>
+      </div>
+      <div class="cc-body">
+        <div class="ex-row"><span class="ex-label ex-ok">Đúng</span><span class="ex-text"><span class="hl">Despite</span> the rain, we went out.</span></div>
+        <div class="ex-row"><span class="ex-label ex-ok">Đúng</span><span class="ex-text"><span class="hl">In spite of</span> being tired, she kept working.</span></div>
+        <div class="ex-row"><span class="ex-label ex-ok">Đúng</span><span class="ex-text"><span class="hl">Despite the fact that</span> it rained, we went out.</span></div>
+        <div class="ex-row"><span class="ex-label ex-bad">Sai</span><span class="ex-text"><span class="hl-red">Despite</span> it rained, we went out.</span></div>
+      </div>
+    </div>
+
+    <div class="compare-grid">
+      <div class="cg-card">
+        <div class="cg-top" style="color:#3C3489">Chuyển although → despite</div>
+        <div class="cg-item">Although <u>they are poor</u>, they are generous.</div>
+        <div style="font-size:12px;color:var(--color-text-tertiary);margin:4px 0 8px">↓ "they are poor" → danh từ hóa</div>
+        <div class="cg-item">Despite <u>their poverty</u>, they are generous.</div>
+      </div>
+      <div class="cg-card">
+        <div class="cg-top" style="color:#3C3489">Chuyển although → despite</div>
+        <div class="cg-item">Although <u>he was tired</u>, he kept working.</div>
+        <div style="font-size:12px;color:var(--color-text-tertiary);margin:4px 0 8px">↓ "he was tired" → V-ing</div>
+        <div class="cg-item">Despite <u>being tired</u>, he kept working.</div>
+      </div>
+    </div>
+
+    <div class="rule-box">
+      <div class="rule-label">Mẹo nhớ nhanh</div>
+      Sau although/even though: phải có <strong>S + V</strong><br>
+      Sau despite/in spite of: chỉ có <strong>danh từ / V-ing</strong>, KHÔNG có S+V
+    </div>
+  </div>
+  <div class="score-row"><div><div class="score-val" id="sc-concede">0 / 0</div><div class="score-lbl">điểm</div></div><button class="reset-btn" onclick="resetQ('concede')">Làm lại</button></div>
+  <div id="qs-concede"></div>
+</div>
+
+<!-- ======================== TƯƠNG PHẢN ======================== -->
+<div id="contrast" class="sec">
+  <div class="unit">
+    <div class="unit-title">Chỉ tương phản — Contrast (Nhưng / Tuy nhiên)</div>
+
+    <div class="compare-grid">
+      <div class="cg-card">
+        <div class="cg-top" style="color:#3C3489">but — dùng trong cùng câu</div>
+        <div class="cg-item">Có dấu phẩy <strong>trước</strong></div>
+        <div class="cg-item">Nối 2 mệnh đề trái nhau</div>
+        <div class="cg-item" style="color:#534AB7">He was tired, <strong>but</strong> he kept going.</div>
+      </div>
+      <div class="cg-card">
+        <div class="cg-top" style="color:#3C3489">however — đầu câu mới</div>
+        <div class="cg-item">Có dấu phẩy <strong>sau</strong></div>
+        <div class="cg-item">Đứng đầu câu hoặc sau dấu chấm phẩy</div>
+        <div class="cg-item" style="color:#534AB7">He was tired. <strong>However,</strong> he kept going.</div>
+      </div>
+    </div>
+
+    <div class="compare-grid">
+      <div class="cg-card">
+        <div class="cg-top" style="color:#854F0B">so — kết quả (vì vậy)</div>
+        <div class="cg-item">Có dấu phẩy <strong>trước</strong></div>
+        <div class="cg-item">Vế sau là KẾT QUẢ của vế trước</div>
+        <div class="cg-item" style="color:#854F0B">It rained, <strong>so</strong> we stayed home.</div>
+      </div>
+      <div class="cg-card">
+        <div class="cg-top" style="color:#854F0B">therefore — vì vậy (trang trọng)</div>
+        <div class="cg-item">Có dấu phẩy <strong>sau</strong></div>
+        <div class="cg-item">Đầu câu mới hoặc giữa câu</div>
+        <div class="cg-item" style="color:#854F0B">It rained. <strong>Therefore,</strong> we stayed home.</div>
+      </div>
+    </div>
+
+    <div class="rule-box">
+      <div class="rule-label">Phân biệt however vs therefore</div>
+      <strong>However</strong>: 2 vế TRÁI NHAU (tuy nhiên)<br>
+      <strong>Therefore</strong>: vế sau là KẾT QUẢ của vế trước (vì vậy)<br>
+      <strong>Moreover / Furthermore / In addition</strong>: BỔ SUNG thêm thông tin (ngoài ra)
+    </div>
+  </div>
+  <div class="score-row"><div><div class="score-val" id="sc-contrast">0 / 0</div><div class="score-lbl">điểm</div></div><button class="reset-btn" onclick="resetQ('contrast')">Làm lại</button></div>
+  <div id="qs-contrast"></div>
+</div>
+
+<!-- ======================== KẾT QUẢ ======================== -->
+<div id="result" class="sec">
+  <div class="unit">
+    <div class="unit-title">Chỉ kết quả — Result</div>
+
+    <div class="concept-card">
+      <div class="cc-head" style="background:#FAEEDA">
+        <span class="cc-badge" style="background:#FAC775;color:#633806">so + adj/adv + that</span>
+        <div>
+          <div class="cc-rule">S + be + <em>so</em> + adj + <em>that</em> + S + V</div>
+          <div class="cc-sub">Quá... đến nỗi mà...</div>
+        </div>
+      </div>
+      <div class="cc-body">
+        <div class="ex-row"><span class="ex-label ex-ok">Đúng</span><span class="ex-text">He was <span class="hl">so tired that</span> he fell asleep immediately.</span></div>
+        <div class="ex-row"><span class="ex-label ex-ok">Đúng</span><span class="ex-text">She studied <span class="hl">so hard that</span> she passed all exams.</span></div>
+      </div>
+    </div>
+
+    <div class="concept-card">
+      <div class="cc-head" style="background:#FAEEDA">
+        <span class="cc-badge" style="background:#FAC775;color:#633806">too + adj + to V</span>
+        <div>
+          <div class="cc-rule">S + be + <em>too</em> + adj + <em>to</em> + V</div>
+          <div class="cc-sub">Quá... để không thể làm gì</div>
+        </div>
+      </div>
+      <div class="cc-body">
+        <div class="ex-row"><span class="ex-label ex-ok">Đúng</span><span class="ex-text">The coffee was <span class="hl">too</span> hot <span class="hl">to</span> drink.</span></div>
+        <div class="ex-row"><span class="ex-label ex-ok">Đúng</span><span class="ex-text">He was <span class="hl">too</span> tired <span class="hl">to</span> continue.</span></div>
+      </div>
+    </div>
+
+    <div class="compare-grid">
+      <div class="cg-card">
+        <div class="cg-top" style="color:#633806">so…that (có thể)</div>
+        <div class="cg-item">She was <strong>so</strong> strong <strong>that</strong> she could lift it.</div>
+        <div style="font-size:12px;color:var(--color-text-tertiary);margin-top:4px">→ Kết quả dùng could/couldn't</div>
+      </div>
+      <div class="cg-card">
+        <div class="cg-top" style="color:#633806">too…to (không thể)</div>
+        <div class="cg-item">The box was <strong>too</strong> heavy <strong>to</strong> lift.</div>
+        <div style="font-size:12px;color:var(--color-text-tertiary);margin-top:4px">→ Ngầm hiểu là không thể</div>
+      </div>
+    </div>
+  </div>
+  <div class="score-row"><div><div class="score-val" id="sc-result">0 / 0</div><div class="score-lbl">điểm</div></div><button class="reset-btn" onclick="resetQ('result')">Làm lại</button></div>
+  <div id="qs-result"></div>
+</div>
+
+<!-- ======================== THỜI GIAN ======================== -->
+<div id="time" class="sec">
+  <div class="unit">
+    <div class="unit-title">Mệnh đề thời gian — Time clauses</div>
+
+    <div class="concept-card">
+      <div class="cc-head" style="background:#E1F5EE">
+        <span class="cc-badge" style="background:#9FE1CB;color:#085041">Các từ nối thời gian</span>
+        <div><div class="cc-rule">when, while, before, after, since, as soon as, until, by the time</div></div>
+      </div>
+      <div class="cc-body">
+        <div class="ex-row"><span class="ex-label ex-ok">when</span><span class="ex-text"><span class="hl">When</span> I woke up, the birds were singing. (ngay lúc)</span></div>
+        <div class="ex-row"><span class="ex-label ex-ok">while</span><span class="ex-text"><span class="hl">While</span> he was cooking, I set the table. (trong khi)</span></div>
+        <div class="ex-row"><span class="ex-label ex-ok">as soon as</span><span class="ex-text">Call me <span class="hl">as soon as</span> you arrive. (ngay khi)</span></div>
+        <div class="ex-row"><span class="ex-label ex-ok">until</span><span class="ex-text">Wait here <span class="hl">until</span> I come back. (cho đến khi)</span></div>
+        <div class="ex-row"><span class="ex-label ex-ok">by the time</span><span class="ex-text"><span class="hl">By the time</span> she is forty, she'll be a billionaire. (trước khi)</span></div>
+      </div>
+    </div>
+
+    <div class="rule-box">
+      <div class="rule-label">Quy tắc thì — QUAN TRỌNG</div>
+      Sau when / while / before / after / as soon as / until / by the time: <strong>KHÔNG dùng will / would</strong><br>
+      → Diễn đạt tương lai: dùng <strong>thì hiện tại đơn</strong><br>
+      → Ví dụ: "By the time she <strong>is</strong> forty…" (KHÔNG phải "will be")
+    </div>
+
+    <div class="compare-grid">
+      <div class="cg-card">
+        <div class="cg-top" style="color:#085041">while + quá khứ tiếp diễn</div>
+        <div class="cg-item">Dan made friends <strong>while</strong> he <strong>was travelling</strong>.</div>
+        <div style="font-size:12px;color:var(--color-text-tertiary);margin-top:4px">Hành động kéo dài là nền</div>
+      </div>
+      <div class="cg-card">
+        <div class="cg-top" style="color:#085041">when + quá khứ đơn</div>
+        <div class="cg-item"><strong>When</strong> I arrived, he <strong>left</strong>.</div>
+        <div style="font-size:12px;color:var(--color-text-tertiary);margin-top:4px">Hai hành động xảy ra nối tiếp</div>
+      </div>
+    </div>
+  </div>
+  <div class="score-row"><div><div class="score-val" id="sc-time">0 / 0</div><div class="score-lbl">điểm</div></div><button class="reset-btn" onclick="resetQ('time')">Làm lại</button></div>
+  <div id="qs-time"></div>
+</div>
+
+<!-- ======================== ĐIỀU KIỆN ======================== -->
+<div id="condition" class="sec">
+  <div class="unit">
+    <div class="unit-title">Mệnh đề điều kiện — Condition</div>
+
+    <div class="concept-card">
+      <div class="cc-head" style="background:#FAECE7">
+        <span class="cc-badge" style="background:#F5C4B3;color:#712B13">if / unless / as long as</span>
+        <div>
+          <div class="cc-rule">Đặt ra điều kiện để việc gì đó xảy ra</div>
+        </div>
+      </div>
+      <div class="cc-body">
+        <div class="ex-row"><span class="ex-label ex-ok">if</span><span class="ex-text"><span class="hl">If</span> it rains, we'll stay home. (nếu)</span></div>
+        <div class="ex-row"><span class="ex-label ex-ok">unless</span><span class="ex-text"><span class="hl">Unless</span> you try, you won't succeed. (trừ khi = if…not)</span></div>
+        <div class="ex-row"><span class="ex-label ex-ok">as long as</span><span class="ex-text">You can go <span class="hl">as long as</span> you finish your homework. (miễn là)</span></div>
+        <div class="ex-row"><span class="ex-label ex-ok">whether…or</span><span class="ex-text"><span class="hl">Whether</span> it rains <span class="hl">or</span> not, we'll go. (dù… hay…)</span></div>
+      </div>
+    </div>
+
+    <div class="rule-box">
+      <div class="rule-label">unless = if…not</div>
+      Unless you study = If you <strong>don't</strong> study<br>
+      Unless it rains = If it <strong>doesn't</strong> rain
+    </div>
+  </div>
+  <div class="score-row"><div><div class="score-val" id="sc-condition">0 / 0</div><div class="score-lbl">điểm</div></div><button class="reset-btn" onclick="resetQ('condition')">Làm lại</button></div>
+  <div id="qs-condition"></div>
+</div>
+
+<!-- ======================== TỔNG HỢP ======================== -->
+<div id="mixed" class="sec">
+  <div class="score-row"><div><div class="score-val" id="sc-mixed">0 / 0</div><div class="score-lbl">điểm — tổng hợp tất cả loại</div></div><button class="reset-btn" onclick="resetQ('mixed')">Làm lại</button></div>
+  <div id="qs-mixed"></div>
+</div>
+
+</div>
+
+<script>
+const DB={
+  cause:[
+    {q:"She stayed home ______ she was feeling sick.",h:"Nhìn sau chỗ trống: 'she was feeling sick' — có chủ ngữ + động từ không?",opts:["A. because of","B. because","C. due to","D. owing to"],a:1,ex:"'Because' + mệnh đề (S+V). Không dùng 'because of' khi đằng sau có chủ ngữ và động từ."},
+    {q:"Our flight was delayed ______ the heavy fog.",h:"Sau chỗ trống là 'the heavy fog' — chỉ là danh từ, không có động từ.",opts:["A. because","B. since","C. due to","D. as"],a:2,ex:"'Due to' + danh từ/cụm danh từ. 'Because' cần mệnh đề S+V đằng sau."},
+    {q:"Cell phones should be banned in school ______ they can be a major distraction.",h:"Vế sau ('they can be...') có chủ ngữ và động từ không?",opts:["A. due to","B. because of","C. because","D. in spite of"],a:2,ex:"'Because' + mệnh đề. Vế sau có S (they) + V (can be) → dùng because."},
+    {q:"He failed the exam ______ his lack of preparation.",h:"'his lack of preparation' là cụm danh từ hay mệnh đề S+V?",opts:["A. because","B. although","C. because of","D. however"],a:2,ex:"'Because of' + danh từ ('his lack of preparation'). Không có S+V đằng sau."},
+    {q:"______ the bad weather, the match was cancelled.",h:"Sau chỗ trống là 'the bad weather' — danh từ hay mệnh đề?",opts:["A. Because","B. Since","C. Due to","D. Although"],a:2,ex:"'Due to' + danh từ (the bad weather). 'Because/Since' cần S+V. 'Although' diễn đạt nhượng bộ."},
+  ],
+  concede:[
+    {q:"______ the high cost, we decided to buy the tickets.",h:"Sau chỗ trống là 'the high cost' — danh từ. Dùng mệnh đề hay cụm từ?",opts:["A. Although","B. Despite","C. Because of","D. Even though"],a:1,ex:"'Despite' + danh từ. 'Although/Even though' cần S+V sau. 'Because of' diễn đạt nguyên nhân."},
+    {q:"______ it was raining heavily, the children played outside.",h:"Sau chỗ trống là 'it was raining' — có S+V. Hai vế có trái nhau không?",opts:["A. Despite","B. In spite of","C. Although","D. Because of"],a:2,ex:"'Although' + mệnh đề S+V. 'Despite/In spite of' cần danh từ/V-ing."},
+    {q:"Although they are poor, _______.",h:"Câu có although ở trước — vế sau phải trái nghĩa. Không được dùng thêm 'but'.",opts:["A. but they are very generous","B. they are very generous","C. however they are generous","D. so they are generous"],a:1,ex:"Sau although không dùng 'but'. Câu đúng: 'Although they are poor, they are very generous.'"},
+    {q:"______ the questions were very difficult, he solved them easily.",h:"Hai vế có trái nhau không? (khó >< giải dễ). Vế sau có S+V không?",opts:["A. Despite","B. In spite of","C. Although","D. Because"],a:2,ex:"'Although' + S+V (the questions were very difficult). 'Despite/In spite of' + danh từ."},
+    {q:"In spite of ______, he kept working hard.",h:"'In spite of' là cụm từ, đằng sau chỉ được có danh từ hoặc V-ing.",opts:["A. he was tired","B. being tired","C. tired","D. his tiredness he"],a:1,ex:"'In spite of' + V-ing (being tired) hoặc danh từ (his tiredness). Không dùng S+V sau in spite of."},
+  ],
+  contrast:[
+    {q:"Michael felt tired. ______, he went to work.",h:"Đây là 2 câu riêng. Vế 2 có TRÁI với vế 1 không? Dấu gì đứng sau chỗ trống?",opts:["A. So","B. Therefore","C. However","D. But"],a:2,ex:"'However' đứng đầu câu mới, có dấy phẩy sau, nối 2 ý trái nhau. 'But' chỉ dùng trong cùng câu."},
+    {q:"They planned to go for a picnic; ______, the rain spoiled their plans.",h:"Dấu chấm phẩy (;) chia 2 ý. Vế 2 có TRÁI với vế 1 không?",opts:["A. although","B. however","C. because","D. therefore"],a:1,ex:"'However' sau dấu chấm phẩy, nối 2 ý trái nhau (kế hoạch >< bị phá vỡ)."},
+    {q:"It rained heavily, ______ we decided to cancel the trip.",h:"Vế 2 có phải KẾT QUẢ của vế 1 không? Dấu phẩy ở đâu?",opts:["A. however","B. but","C. so","D. although"],a:2,ex:"'So' + dấu phẩy trước, vế sau là kết quả. Trời mưa → quyết định huỷ chuyến đi."},
+    {q:"I rarely go swimming; ______, my house is near the beach.",h:"Hiếm khi bơi >< nhà gần biển — hai ý có TRÁI NHAU không?",opts:["A. however","B. so","C. although","D. therefore"],a:0,ex:"'However' nối 2 ý trái nhau: hiếm khi bơi >< nhà gần biển. 'So/Therefore' chỉ quan hệ kết quả."},
+    {q:"...no specific vaccines for COVID-19. ______, there are many ongoing clinical trials...",h:"Vế sau có trái với 'không có vaccine' không, hay là bổ sung thông tin?",opts:["A. Therefore","B. However","C. Moreover","D. Otherwise"],a:1,ex:"'However' = tuy nhiên, nối 2 ý tương phản: không có vaccine >< có nhiều thử nghiệm lâm sàng."},
+  ],
+  result:[
+    {q:"The weather was awful. We decided not to go out. → The weather was ______ awful ______ we decided not to go out.",h:"Kết quả tự nhiên. Dùng cấu trúc 'quá... đến nỗi...'",opts:["A. too / to","B. so / that","C. such / that","D. too / that"],a:1,ex:"'So + adj + that + S + V' = quá... đến nỗi... 'Too...to' không dùng với 'that'."},
+    {q:"The coffee was very strong. He couldn't drink it. → The coffee was ______ strong ______ him to drink.",h:"'Quá... để không thể...' Dùng cấu trúc nào?",opts:["A. so / that","B. too / for","C. such / that","D. very / to"],a:1,ex:"'Too + adj + for sb + to V' = quá... để ai đó không thể làm gì. 'Too strong for him to drink'."},
+    {q:"She was ______ tired that she fell asleep on the bus.",h:"Điền vào trước 'tired' và sau có 'that'. Cấu trúc gì?",opts:["A. too","B. very","C. so","D. such"],a:2,ex:"'So + adj/adv + that + S + V'. 'Such' dùng trước danh từ (such a tired girl)."},
+    {q:"It was ______ a cold day that the schools closed.",h:"Sau chỗ trống là 'a cold day' — danh từ. Dùng 'so' hay 'such'?",opts:["A. so","B. such","C. too","D. very"],a:1,ex:"'Such + (a/an) + adj + noun + that'. Khi theo sau là danh từ dùng 'such'. 'So' theo sau là tính từ/trạng từ."},
+  ],
+  time:[
+    {q:"Dan made a lot of friends while he ______ around America.",h:"'While' + hành động kéo dài. Trong quá khứ, dùng thì gì?",opts:["A. was travelling","B. has travelled","C. will travel","D. had travelled"],a:0,ex:"'While' + quá khứ tiếp diễn (was V-ing) = hành động đang diễn ra làm nền cho hành động khác."},
+    {q:"When I woke up, the birds ______ outside.",h:"'When I woke up' — thì quá khứ đơn. Chim hót là hành động đang xảy ra hay xảy ra trước?",opts:["A. are singing","B. were singing","C. sang","D. had sung"],a:1,ex:"Hành động (chim hót) đang xảy ra khi tôi thức dậy → quá khứ tiếp diễn (were singing)."},
+    {q:"She'll be a billionaire by the time she ______ forty.",h:"Sau 'by the time' — mệnh đề thời gian. Có được dùng will không?",opts:["A. is","B. was","C. will be","D. would be"],a:0,ex:"Sau 'by the time' (mệnh đề thời gian) dùng thì HT đơn để diễn đạt tương lai, không dùng will."},
+    {q:"He has worked here since he ______ from university.",h:"'Since' + thời điểm bắt đầu trong quá khứ. Dùng thì gì?",opts:["A. was graduating","B. graduated","C. will graduate","D. is graduating"],a:1,ex:"'Since' + quá khứ đơn (graduated) = kể từ khi anh ấy tốt nghiệp (một thời điểm cụ thể trong quá khứ)."},
+    {q:"______ on the road when the landslide happened?",h:"Câu hỏi về hành động đang diễn ra trong quá khứ. Thì gì?",opts:["A. Are you travelling","B. Were you travelling","C. Did you travel","D. Was you travelling"],a:1,ex:"'Were you travelling?' = quá khứ tiếp diễn dạng hỏi. 'Was you' sai ngữ pháp (phải là 'were you')."},
+  ],
+  condition:[
+    {q:"Children will receive chocolate eggs ______ they have been good.",h:"Điều kiện để nhận trứng là gì? Từ nào nghĩa là 'miễn là'?",opts:["A. as soon as","B. as much as","C. as well as","D. as long as"],a:3,ex:"'As long as' = miễn là, với điều kiện là. 'As soon as' = ngay khi."},
+    {q:"______ it's learning a language or trying new food, there are opportunities abroad.",h:"'... or ...' — Dùng cấu trúc 'dù là... hay...'",opts:["A. Between","B. Both","C. If","D. Whether"],a:3,ex:"'Whether...or...' = dù là... hay... Đây là cấu trúc cố định không thể thay thế."},
+    {q:"______ you try harder, you won't pass the exam.",h:"Nghĩa: 'Trừ khi bạn cố gắng hơn' = nếu bạn không cố gắng hơn",opts:["A. If","B. Unless","C. As long as","D. Whether"],a:1,ex:"'Unless' = if...not. 'Unless you try harder' = 'If you don't try harder'."},
+    {q:"You can borrow my bike ______ you return it by 5pm.",h:"Điều kiện được mượn xe là gì? Từ nào nghĩa là 'miễn là'?",opts:["A. although","B. unless","C. as long as","D. because"],a:2,ex:"'As long as' = miễn là. Bạn được mượn xe miễn là trả lại trước 5 giờ."},
+  ],
+  mixed:[
+    {q:"______ the hand-embroidered picture was expensive, we bought it as a gift.",h:"Nhìn sau chỗ trống: có S+V không? Hai vế trái nhau không?",opts:["A. Despite","B. But","C. Although","D. However"],a:2,ex:"'Although' + mệnh đề S+V. Hai vế trái nhau: đắt >< vẫn mua. 'Despite' cần danh từ."},
+    {q:"I love wearing baggy pants ______ they're so comfortable.",h:"Vế sau giải thích LÝ DO yêu thích. Từ nào diễn đạt nguyên nhân?",opts:["A. due to","B. so","C. because","D. although"],a:2,ex:"'Because' + mệnh đề (they're so comfortable) = vì chúng thoải mái."},
+    {q:"It can be amazing. ______, there's one problem you should know: culture shock.",h:"Hai câu riêng biệt. Vế 2 có TRÁI với 'amazing' không?",opts:["A. Although","B. Therefore","C. Moreover","D. However"],a:3,ex:"'However' nối 2 ý tương phản: tuyệt vời >< có một vấn đề. 'Therefore' = kết quả, sai ý."},
+    {q:"______ we were watching the fireworks, I thought about my goals.",h:"Hai việc xảy ra cùng lúc trong quá khứ. Từ nào diễn đạt 'trong khi / lúc đó'?",opts:["A. As","B. So","C. During","D. Before"],a:0,ex:"'As' = trong khi, diễn đạt 2 việc song song. 'During' + danh từ (during the fireworks), không dùng với mệnh đề."},
+    {q:"The accident was caused ______ the driver's carelessness.",h:"'the driver's carelessness' là danh từ. Từ nào chỉ nguyên nhân + danh từ?",opts:["A. since","B. because of","C. although","D. so as to"],a:1,ex:"'Because of' + danh từ chỉ nguyên nhân. 'Since/Because' cần S+V sau đó."},
+    {q:"He was ______ tired ______ he couldn't move.",h:"Kết quả: mệt đến nỗi không thể cử động. Cấu trúc gì?",opts:["A. too / to","B. so / that","C. such / that","D. very / that"],a:1,ex:"'So + adj + that + S + V'. Câu gốc: He was so tired that he couldn't move."},
+    {q:"It is believed she'll be a billionaire by the time she ______ forty.",h:"Mệnh đề thời gian (by the time). Được dùng will không?",opts:["A. is","B. was","C. will be","D. would be"],a:0,ex:"Sau 'by the time' KHÔNG dùng will. Dùng hiện tại đơn 'is' để diễn đạt tương lai."},
+    {q:"______ the rise in unemployment, people still seem to be spending more.",h:"'the rise in unemployment' là cụm danh từ. Ý sau ('still spending more') có TRÁI với thất nghiệp không?",opts:["A. Nevertheless","B. Meanwhile","C. Despite","D. Although"],a:2,ex:"'Despite' + danh từ, diễn đạt nhượng bộ. 'Although' cần S+V. 'Nevertheless' đứng đầu câu riêng."},
+  ]
+};
+
+const state={};
+Object.keys(DB).forEach(k=>state[k]={got:0,total:0});
+
+function buildQ(id){
+  const qs=DB[id];
+  const c=document.getElementById('qs-'+id);
+  c.innerHTML='';
+  qs.forEach((q,i)=>{
+    const d=document.createElement('div');
+    d.className='q-card';
+    d.innerHTML=`<div class="q-meta">Câu ${i+1}</div>
+<div class="q-text">${q.q}</div>
+<button class="hint-btn" onclick="togH('h-${id}-${i}')">Gợi ý</button>
+<div class="hbox" id="h-${id}-${i}">${q.h}</div>
+<div class="opts">${q.opts.map((o,j)=>`<button class="opt" onclick="ans(this,'${id}',${i},${j})">${o}</button>`).join('')}</div>
+<div class="exp" id="e-${id}-${i}"></div>`;
+    c.appendChild(d);
+  });
+}
+
+function togH(id){document.getElementById(id).classList.toggle('on')}
+
+function ans(btn,sec,qi,chosen){
+  const q=DB[sec][qi];
+  const opts=btn.parentElement.querySelectorAll('.opt');
+  opts.forEach(o=>o.disabled=true);
+  const correct=chosen===q.a;
+  btn.classList.add(correct?'ok':'no');
+  opts[q.a].classList.add('ok');
+  const e=document.getElementById(`e-${sec}-${qi}`);
+  e.textContent=(correct?'Đúng rồi! ':'Chưa đúng. ')+q.ex;
+  e.className='exp on '+(correct?'ok':'no');
+  state[sec].total++;
+  if(correct)state[sec].got++;
+  document.getElementById('sc-'+sec).textContent=`${state[sec].got} / ${state[sec].total}`;
+}
+
+function resetQ(sec){
+  state[sec]={got:0,total:0};
+  document.getElementById('sc-'+sec).textContent='0 / 0';
+  buildQ(sec);
+}
+
+function go(id){
+  document.querySelectorAll('.ntab').forEach(t=>t.classList.remove('on'));
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
+  event.target.classList.add('on');
+  document.getElementById(id).classList.add('on');
+}
+
+Object.keys(DB).forEach(buildQ);
+</script>
